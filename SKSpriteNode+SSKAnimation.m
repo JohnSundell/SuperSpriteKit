@@ -1,4 +1,5 @@
 #import "SKSpriteNode+SSKAnimation.h"
+#import "SKNode+Extra.h"
 
 NSString * const SSKAnimationActionKey = @"SSKAnimation";
 
@@ -57,7 +58,8 @@ NSArray *SSKAnimationTexturesFromAtlas(SKTextureAtlas *atlas, NSString *animatio
         return;
     }
     
-    [self runAction:[SKAction repeatActionForever:animationAction] withKey:SSKAnimationActionKey];
+    [self runActionForever:animationAction withKey:SSKAnimationActionKey];
 }
 
 @end
+

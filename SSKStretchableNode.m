@@ -2,7 +2,7 @@
 
 #pragma mark - C Utilities
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, JSStretchableNodePart) {
     JSStretchableNodePartTopLeft,
     JSStretchableNodePartTop,
     JSStretchableNodePartTopRight,
@@ -12,7 +12,7 @@ typedef enum : NSUInteger {
     JSStretchableNodePartBottomLeft,
     JSStretchableNodePartLeft,
     JSStretchableNodePartCenter
-} JSStretchableNodePart;
+};
 
 static CGFloat JSStretchableNodeNoResizing = -9999;
 
@@ -186,9 +186,7 @@ static CGRect JSStretchableNodeTextureRectFromPartRect(SKTexture *texture, CGRec
         return;
     }
     
-    for (SKSpriteNode *partNode in self.partNodes) {
-        partNode.zPosition = zPosition;
-    }
+    [self.partNodes makeObjectsPerformSelector:@selector(setZPosition:) withObject:@(zPosition)];
 }
 
 - (void)setSize:(CGSize)size
@@ -230,9 +228,7 @@ static CGRect JSStretchableNodeTextureRectFromPartRect(SKTexture *texture, CGRec
     
     _color = color;
     
-    for (SSKTileableNode *partNode in self.partNodes) {
-        partNode.color = color;
-    }
+    [self.partNodes makeObjectsPerformSelector:@selector(setColor:) withObject:color];
 }
 
 - (void)setColorBlendFactor:(CGFloat)colorBlendFactor
@@ -243,9 +239,7 @@ static CGRect JSStretchableNodeTextureRectFromPartRect(SKTexture *texture, CGRec
     
     _colorBlendFactor = colorBlendFactor;
     
-    for (SSKTileableNode *partNode in self.partNodes) {
-        partNode.colorBlendFactor = colorBlendFactor;
-    }
+    [self.partNodes makeObjectsPerformSelector:@selector(setColorBlendFactor:) withObject:@(colorBlendFactor)];
 }
 
 @end
