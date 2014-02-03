@@ -71,9 +71,7 @@ static NSString *JSMultilineLabelNodeGetStringForWord(NSString *word)
     
     _fontColor = fontColor;
     
-    for (SKLabelNode *labelNode in self.lineLabelNodes) {
-        labelNode.fontColor = fontColor;
-    }
+    [self.lineLabelNodes makeObjectsPerformSelector:@selector(setFontColor:) withObject:fontColor];
 }
 
 - (void)setText:(NSString *)text
@@ -101,12 +99,12 @@ static NSString *JSMultilineLabelNodeGetStringForWord(NSString *word)
     NSMutableArray *lineLabelNodes = [NSMutableArray new];
     NSArray *wordsInText = [text componentsSeparatedByString:@" "];
     NSUInteger numberOfParsedWords = 0;
-    
+
     SSKFontType *font = [SSKFontType fontWithName:self.fontName size:self.fontSize];
     CGFloat fontLineHeight = JSMultilineLabelNodeGetFontLineHeight(font);
     NSDictionary *textAttributes = @{NSFontAttributeName: font};
     NSCharacterSet *newLineCharacterSet = [NSCharacterSet newlineCharacterSet];
-    
+
     while (numberOfParsedWords < [wordsInText count]) {
         NSMutableString *lineText = [NSMutableString string];
         

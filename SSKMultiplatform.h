@@ -20,11 +20,11 @@
 /**
  *  Enum describing various platforms that a SpriteKit game can run on
  */
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, SSKPlatformType) {
     SSKPlatformTypePhone,
     SSKPlatformTypePad,
     SSKPlatformTypeDesktop
-} SSKPlatformType;
+};
 
 /**
  *  Get the current platform type that the game is currently running on
@@ -43,10 +43,10 @@ static inline SSKPlatformType SSKCurrentPlatform()
 /**
  *  Enum providing a simplified, platform-agnostic way to handle device orientation
  */
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, SSKDeviceOrientation) {
     SSKDeviceOrientationPortrait,
     SSKDeviceOrientationLandscape
-} SSKDeviceOrientation;
+};
 
 /**
  *  Get the current orientation of the device that the game is currently running on

@@ -117,9 +117,7 @@ static CGFloat SSKTileableNodeNoResizing = -9999;
     
     _color = color;
     
-    for (SSKTileableNode *partNode in self.partNodes) {
-        partNode.color = color;
-    }
+    [self.partNodes makeObjectsPerformSelector:@selector(setColor:) withObject:color];
 }
 
 - (void)setColorBlendFactor:(CGFloat)colorBlendFactor
@@ -130,9 +128,7 @@ static CGFloat SSKTileableNodeNoResizing = -9999;
     
     _colorBlendFactor = colorBlendFactor;
     
-    for (SSKTileableNode *partNode in self.partNodes) {
-        partNode.colorBlendFactor = colorBlendFactor;
-    }
+    [self.partNodes makeObjectsPerformSelector:@selector(setColorBlendFactor:) withObject:@(colorBlendFactor)];
 }
 
 @end
