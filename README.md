@@ -24,6 +24,10 @@ A node that allows you to gracefully stretch a texture across a size, using edge
 
 A label node that can render multiple lines of text. It provides a simple API for creating instances using a max-width and a set number of lines (if desired). It also supports setting styles like font, font size and text color.
 
+##### SSKInteractionHandler
+
+A class dedicated to input in a platform-agnostic manner. By using this interaction handler a lot of platform-specific and/or boilerplate input code can be removed from scenes and nodes throught the game.
+
 ##### SKSpriteNode+SSKAnimation
 
 A category on SKSpriteNode that enables easy animation without having to create new actions. It also provides a utility function for generating an array of SKTexture instances from a texture atlas.
