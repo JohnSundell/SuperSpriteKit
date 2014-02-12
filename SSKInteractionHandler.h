@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <SpriteKit/SKView.h>
 
 /**
  *  Enum describing possible interaction types
