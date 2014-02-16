@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <SpriteKit/SKView.h>
+#import "SSKMultiplatform.h"
 
 /**
  *  Enum describing possible interaction types
@@ -20,7 +21,7 @@ typedef enum : NSUInteger {
 } SSKInteractionType;
 
 /**
- *  Protocol implemented by nodes to recieve interaction events
+ *  Protocol implemented by nodes to receive interaction events
  */
 @protocol SSKInteractiveNode <NSObject>
 
@@ -54,6 +55,19 @@ typedef enum : NSUInteger {
  *  interaction took place.
  */
 - (void)pointInteractionWithType:(SSKInteractionType)type endedAtPoint:(CGPoint)point;
+
+/**
+ *  Sent to an interactive node when the on-screen pointer (mouse) was moved over it
+ *
+ *  @param point The point to which the pointer was moved
+ *
+ *  @discussion As OSX is the only platform that utilizes an on-screen pointer,
+ *  this method is irrelevant for iOS.
+ *
+ *  @note Be sure to set acceptsMouseMovedEvents = YES on your application's key window
+ *  in order to receive these type of events.
+ */
+- (void)pointerMovedInteractionAtPoint:(CGPoint)point;
 
 @end
 
