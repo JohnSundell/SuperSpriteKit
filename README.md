@@ -26,7 +26,7 @@ A label node that can render multiple lines of text. It provides a simple API fo
 
 ##### SSKInteractionHandler
 
-A class dedicated to input in a platform-agnostic manner. By using this interaction handler a lot of platform-specific and/or boilerplate input code can be removed from scenes and nodes throught the game. At the moment, it only handles click & touch interactions, but more is coming soon!
+A class dedicated to input in a platform-agnostic manner. By using this interaction handler a lot of platform-specific and/or boilerplate input code can be removed from scenes and nodes throught the game. At the moment, it only handles click, touch & mouse move interactions, but more is coming soon!
 
 ##### SKSpriteNode+SSKAnimation
 
