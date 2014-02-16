@@ -138,8 +138,9 @@ typedef enum : NSUInteger {
 
 - (instancetype)initWithFrame:(CGRect)frame interactionHandler:(SSKInteractionHandler *)interactionHandler
 {
-    if (!(self = [super initWithFrame:frame]))
+    if (!(self = [super initWithFrame:frame])) {
         return nil;
+    }
     
     _interactionHandler = interactionHandler;
     
