@@ -27,7 +27,7 @@ typedef enum : NSUInteger {
 @optional
 
 /**
- *  Sent to an interactive node when an interaction started on it
+ *  Sent to an interactive node when a point interaction started on it
  *
  *  @param type The type of interaction that was started.
  *  @param point The point (in the node's coordinate space), where the
@@ -36,7 +36,7 @@ typedef enum : NSUInteger {
 - (void)pointInteractionWithType:(SSKInteractionType)type startedAtPoint:(CGPoint)point;
 
 /**
- *  Sent to an interactive node when an interaction on it was cancelled
+ *  Sent to an interactive node when a point interaction on it was cancelled
  *
  *  @discussion An interaction is considered cancelled whenever an interaction on the
  *  screen ended, and an interaction was started on a node, but not ended on the same node.
@@ -47,7 +47,7 @@ typedef enum : NSUInteger {
 - (void)pointInteractionCancelled;
 
 /**
- *  Sent to an interactive node when an interaction was ended on it
+ *  Sent to an interactive node when a point interaction was ended on it
  *
  *  @param type The type of interaction that was ended.
  *  @param point The point (in the node's coordinate space) where the
