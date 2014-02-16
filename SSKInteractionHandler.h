@@ -74,6 +74,15 @@ typedef enum : NSUInteger {
 /**
  *  A multiplatform interaction handler that makes it easy to handle
  *  user interactions across both iOS & OSX in SpriteKit-powered games
+ *
+ *  @discussion To use SSKInteractionHandler, create a new instance of it and
+ *  hold onto it strongly. Then, add your interaction handler to any SKView
+ *  you want it to handle interactions for; using -ssk_addInteractionHandler:.
+ *  Finally, make the scenes/nodes you wish to receive interaction events for
+ *  conform to the <SSKInteractiveNode> protocol and implement any methods
+ *  corresponding to the events you wish to receive.
+ *
+ *  For more information see <SSKInteractiveNode>.
  */
 @interface SSKInteractionHandler : NSObject
 
