@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <SpriteKit/SKView.h>
+#import <SpriteKit/SpriteKit.h>
 #import "SSKMultiplatform.h"
 
 /**
