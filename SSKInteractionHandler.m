@@ -136,6 +136,12 @@ typedef enum : NSUInteger {
                                    CGPoint nodePoint = [node convertPoint:point fromNode:self.view.scene];
                                    [node pointerMovedInteractionAtPoint:nodePoint];
                                }];
+    
+    if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
+        if ([self.view.scene respondsToSelector:@selector(pointerMovedInteractionAtPoint:)]) {
+            [(SKView<SSKInteractiveNode> *)self.view.scene pointerMovedInteractionAtPoint:point];
+        }
+    }
 }
 
 - (void)forEachInteractiveNodeAtPoint:(CGPoint)point thatRespondsToSelector:(SEL)selector runBlock:(void(^)(SKNode<SSKInteractiveNode> *node))block
