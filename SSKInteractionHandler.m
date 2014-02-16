@@ -79,15 +79,9 @@ typedef enum : NSUInteger {
                                        }];
         }
             break;
-        case SSKInteractionHandlerEventCancelled: {
-            for (SKNode<SSKInteractiveNode> *node in self.currentInteractionNodes) {
-                if ([node respondsToSelector:@selector(pointInteractionCancelled)]) {
-                    [node pointInteractionCancelled];
-                }
-            }
+        case SSKInteractionHandlerEventCancelled:
+            [self pointInteractionCancelledOrEnded];
             
-            [self.currentInteractionNodes removeAllObjects];
-        }
             break;
         case SSKInteractionHandlerEventEnded: {
             [self forEachInteractiveNodeAtPoint:point
@@ -98,9 +92,22 @@ typedef enum : NSUInteger {
                                            CGPoint nodePoint = [node convertPoint:point fromNode:self.view.scene];
                                            [node pointInteractionWithType:type endedAtPoint:nodePoint];
                                        }];
+            
+            [self pointInteractionCancelledOrEnded];
         }
             break;
     }
+}
+
+- (void)pointInteractionCancelledOrEnded
+{
+    for (SKNode<SSKInteractiveNode> *node in self.currentInteractionNodes) {
+        if ([node respondsToSelector:@selector(pointInteractionCancelled)]) {
+            [node pointInteractionCancelled];
+        }
+    }
+    
+    [self.currentInteractionNodes removeAllObjects];
 }
 
 - (void)handlePointerMovedEventAtPoint:(CGPoint)point
