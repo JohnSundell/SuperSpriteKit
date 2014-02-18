@@ -107,7 +107,7 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
             
             if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
                 if ([self.view.scene respondsToSelector:@selector(pointInteractionWithType:startedAtPoint:)]) {
-                    [(SKView<SSKInteractiveNode> *)self.view.scene pointInteractionWithType:type startedAtPoint:point];
+                    [(SKScene<SSKInteractiveNode> *)self.view.scene pointInteractionWithType:type startedAtPoint:point];
                 }
             }
         }
@@ -117,7 +117,7 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
             
             if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
                 if ([self.view.scene respondsToSelector:@selector(pointInteractionCancelled)]) {
-                    [(SKView<SSKInteractiveNode> *)self.view.scene pointInteractionCancelled];
+                    [(SKScene<SSKInteractiveNode> *)self.view.scene pointInteractionCancelled];
                 }
             }
             
@@ -136,7 +136,7 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
             
             if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
                 if ([self.view.scene respondsToSelector:@selector(pointInteractionWithType:endedAtPoint:)]) {
-                    [(SKView<SSKInteractiveNode> *)self.view.scene pointInteractionWithType:type endedAtPoint:point];
+                    [(SKScene<SSKInteractiveNode> *)self.view.scene pointInteractionWithType:type endedAtPoint:point];
                 }
             }
         }
@@ -166,7 +166,7 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
     
     if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
         if ([self.view.scene respondsToSelector:@selector(pointerMovedInteractionAtPoint:)]) {
-            [(SKView<SSKInteractiveNode> *)self.view.scene pointerMovedInteractionAtPoint:point];
+            [(SKScene<SSKInteractiveNode> *)self.view.scene pointerMovedInteractionAtPoint:point];
         }
     }
 }
