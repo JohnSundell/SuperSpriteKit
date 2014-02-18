@@ -26,7 +26,7 @@ A label node that can render multiple lines of text. It provides a simple API fo
 
 ##### SSKInteractionHandler
 
-A class dedicated to input in a platform-agnostic manner. By using this interaction handler a lot of platform-specific and/or boilerplate input code can be removed from scenes and nodes throught the game. At the moment, it only handles click, touch & mouse move interactions, but more is coming soon!
+A class dedicated to input in a platform-agnostic manner. By using this interaction handler a lot of platform-specific and/or boilerplate input code can be removed from scenes and nodes throught the game. At the moment, the supported interactions are: touch & mouse click events & mouse move events & keyboard events, but more is coming soon!
 
 ##### SKSpriteNode+SSKAnimation
 
@@ -34,6 +34,6 @@ A category on SKSpriteNode that enables easy animation without having to create 
 
 #### Hope that you'll enjoy using SuperSpriteKit
 
-This is just the beginning! I would love to get pull requests if you have created a generic SpriteKit-extension that you would like included!
+This is just the beginning! I would love to get pull requests if you have created a generic SpriteKit-extension that you would like to be included!
 
 Why not give me a shout on Twitter: [@johnsundell](https://twitter.com/johnsundell)
