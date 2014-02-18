@@ -6,6 +6,8 @@ typedef enum : NSUInteger {
     SSKInteractionHandlerEventEnded
 } SSKInteractionHandlerEvent;
 
+#if !TARGET_OS_IPHONE
+
 static BOOL SSKEventModifierFlagsContainNewKeyDown(NSUInteger newFlags, NSUInteger lastFlags, NSUInteger keyMask)
 {
     if (newFlags & keyMask) {
@@ -27,6 +29,8 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
     
     return NO;
 }
+
+#endif
 
 #pragma mark - SSKInteractionView interface
 
