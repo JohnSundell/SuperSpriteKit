@@ -2,6 +2,8 @@
 #import <SpriteKit/SpriteKit.h>
 #import "SSKMultiplatform.h"
 
+#pragma mark - Enums
+
 /**
  *  Enum describing possible interaction types
  */
@@ -19,6 +21,19 @@ typedef enum : NSUInteger {
      */
     SSKInteractionTypeSecondary
 } SSKInteractionType;
+
+/**
+ *  Enum describing various special keys available on a standard Mac keyboard
+ */
+typedef enum : NSUInteger {
+    SSKSpecialKeyShift,
+    SSKSpecialKeyControl,
+    SSKSpecialKeyAlt,
+    SSKSpecialKeyCommand,
+    SSKSpecialKeyFn
+} SSKSpecialKey;
+
+#pragma mark - SSKInteractiveNode
 
 /**
  *  Protocol implemented by nodes to receive interaction events
@@ -71,6 +86,54 @@ typedef enum : NSUInteger {
 
 @end
 
+#pragma mark - SSKInteractiveScene
+
+/**
+ *  Protocol implemented by scenes to receive interaction events
+ *
+ *  @discussion Since all SKScenes are also SKNodes, scenes may also implement
+ *  the <SSKInteractiveNode> protocol.
+ */
+@protocol SSKInteractiveScene <NSObject>
+
+@optional
+
+/**
+ *  Sent to an interactive scene when a standard keyboard key was pressed
+ *
+ *  @param keyCode The key code of the key that was pressed
+ */
+- (void)keyboardKeyPressed:(unsigned short)keyCode;
+
+/**
+ *  Sent to an interactive scene when a standard keyboard key was released
+ *
+ *  @param keyCode The key code of the key that was released
+ */
+- (void)keyboardKeyReleased:(unsigned short)keyCode;
+
+/**
+ *  Sent to an interactive scene when a special keyboard key was pressed
+ *
+ *  @param specialKey The special key that was pressed
+ *
+ *  @discussion See SSKSpecialKey for available keys
+ */
+- (void)keyboardSpecialKeyPressed:(SSKSpecialKey)specialKey;
+
+/**
+ *  Sent to an interactive scene when a special keyboard key was released
+ *
+ *  @param specialKey The special key that was released
+ *
+ *  @discussion See SSKSpecialKey for available keys
+ */
+- (void)keyboardSpecialKeyReleased:(SSKSpecialKey)specialKey;
+
+@end
+
+#pragma mark - SSKInteractionHandler
+
 /**
  *  A multiplatform interaction handler that makes it easy to handle
  *  user interactions across both iOS & OSX in SpriteKit-powered games
@@ -87,6 +150,8 @@ typedef enum : NSUInteger {
 @interface SSKInteractionHandler : NSObject
 
 @end
+
+#pragma mark - SKView+SSKInteractionHandler
 
 /**
  *  Category to add/remove interaction handlers to/from an SKView

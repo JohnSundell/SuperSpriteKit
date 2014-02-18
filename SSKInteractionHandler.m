@@ -6,6 +6,28 @@ typedef enum : NSUInteger {
     SSKInteractionHandlerEventEnded
 } SSKInteractionHandlerEvent;
 
+static BOOL SSKEventModifierFlagsContainNewKeyDown(NSUInteger newFlags, NSUInteger lastFlags, NSUInteger keyMask)
+{
+    if (newFlags & keyMask) {
+        if (!(lastFlags & keyMask)) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger lastFlags, NSUInteger keyMask)
+{
+    if (lastFlags & keyMask) {
+        if (!(newFlags & keyMask)) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 #pragma mark - SSKInteractionView interface
 
 #if TARGET_OS_IPHONE
@@ -16,6 +38,7 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, weak) SSKInteractionHandler *interactionHandler;
 @property (nonatomic, strong, readonly) SKScene *scene;
+@property (nonatomic) NSUInteger eventModifierFlags;
 
 - (instancetype)initWithFrame:(CGRect)frame interactionHandler:(SSKInteractionHandler *)interactionHandler;
 
@@ -161,6 +184,58 @@ typedef enum : NSUInteger {
     }
 }
 
+- (void)handleKeyboardEvent:(SSKInteractionHandlerEvent)event keyCode:(unsigned short)keyCode
+{
+    if (![self.view.scene conformsToProtocol:@protocol(SSKInteractiveScene)]) {
+        return;
+    }
+    
+    SKScene<SSKInteractiveScene> *interactiveScene = (SKScene<SSKInteractiveScene> *)self.view.scene;
+    
+    switch (event) {
+        case SSKInteractionHandlerEventStarted:
+            if ([interactiveScene respondsToSelector:@selector(keyboardKeyPressed:)]) {
+                [interactiveScene keyboardKeyPressed:keyCode];
+            }
+            
+            break;
+        case SSKInteractionHandlerEventEnded:
+            if ([interactiveScene respondsToSelector:@selector(keyboardKeyReleased:)]) {
+                [interactiveScene keyboardKeyReleased:keyCode];
+            }
+            
+            break;
+        case SSKInteractionHandlerEventCancelled:
+            break;
+    }
+}
+
+- (void)handleKeyboardEvent:(SSKInteractionHandlerEvent)event specialKey:(SSKSpecialKey)specialKey
+{
+    if (![self.view.scene conformsToProtocol:@protocol(SSKInteractiveScene)]) {
+        return;
+    }
+    
+    SKScene<SSKInteractiveScene> *interactiveScene = (SKScene<SSKInteractiveScene> *)self.view.scene;
+    
+    switch (event) {
+        case SSKInteractionHandlerEventStarted:
+            if ([interactiveScene respondsToSelector:@selector(keyboardSpecialKeyPressed:)]) {
+                [interactiveScene keyboardSpecialKeyPressed:specialKey];
+            }
+            
+            break;
+        case SSKInteractionHandlerEventEnded:
+            if ([interactiveScene respondsToSelector:@selector(keyboardSpecialKeyReleased:)]) {
+                [interactiveScene keyboardSpecialKeyReleased:specialKey];
+            }
+            
+            break;
+        case SSKInteractionHandlerEventCancelled:
+            break;
+    }
+}
+
 @end
 
 #pragma mark - SSKInteractionView implementation
@@ -184,6 +259,8 @@ typedef enum : NSUInteger {
 }
 
 #if TARGET_OS_IPHONE
+
+#pragma mark - Touch handling
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -213,6 +290,8 @@ typedef enum : NSUInteger {
 }
 
 #else
+
+#pragma mark - Mouse handling
 
 - (void)mouseDown:(NSEvent *)event
 {
@@ -249,6 +328,73 @@ typedef enum : NSUInteger {
 - (void)mouseMoved:(NSEvent *)event
 {
     [self.interactionHandler handlePointerMovedEventAtPoint:[event locationInNode:self.scene]];
+}
+
+#pragma mark - Keyboard handling
+
+- (void)keyDown:(NSEvent *)event
+{
+    [self.interactionHandler handleKeyboardEvent:SSKInteractionHandlerEventStarted
+                                         keyCode:[event keyCode]];
+}
+
+- (void)keyUp:(NSEvent *)event
+{
+    [self.interactionHandler handleKeyboardEvent:SSKInteractionHandlerEventEnded
+                                         keyCode:[event keyCode]];
+}
+
+- (void)flagsChanged:(NSEvent *)event
+{
+    self.eventModifierFlags = [event modifierFlags];
+}
+
+- (void)setEventModifierFlags:(NSUInteger)eventModifierFlags
+{
+    if (_eventModifierFlags == eventModifierFlags) {
+        return;
+    }
+    
+    NSArray *specialKeyMasks = @[
+        @(NSShiftKeyMask),
+        @(NSControlKeyMask),
+        @(NSAlternateKeyMask),
+        @(NSCommandKeyMask),
+        @(NSFunctionKeyMask)
+    ];
+    
+    for (NSNumber *encodedSpecialKeyMask in specialKeyMasks) {
+        NSUInteger specialKeyMask = [encodedSpecialKeyMask unsignedIntegerValue];
+        SSKSpecialKey specialKey = 0;
+        
+        switch (specialKeyMask) {
+            case NSShiftKeyMask:
+                specialKey = SSKSpecialKeyShift;
+                break;
+            case NSControlKeyMask:
+                specialKey = SSKSpecialKeyControl;
+                break;
+            case NSAlternateKeyMask:
+                specialKey = SSKSpecialKeyAlt;
+                break;
+            case NSCommandKeyMask:
+                specialKey = SSKSpecialKeyCommand;
+                break;
+            case NSFunctionKeyMask:
+                specialKey = SSKSpecialKeyFn;
+                break;
+        }
+        
+        if (SSKEventModifierFlagsContainNewKeyDown(eventModifierFlags, _eventModifierFlags, specialKeyMask)) {
+            [self.interactionHandler handleKeyboardEvent:SSKInteractionHandlerEventStarted
+                                              specialKey:specialKey];
+        } else if (SSKEventModifierFlagsContainNewKeyUp(eventModifierFlags, _eventModifierFlags, specialKeyMask)) {
+            [self.interactionHandler handleKeyboardEvent:SSKInteractionHandlerEventEnded
+                                              specialKey:specialKey];
+        }
+    }
+    
+    _eventModifierFlags = eventModifierFlags;
 }
 
 #endif
