@@ -23,7 +23,7 @@
  *
  *  @discussion Defaults to 0
  */
-@property (nonatomic, setter = ssk_setTag:) NSUInteger ssk_tag;
+@property (nonatomic, setter = ssk_setTag:) NSInteger ssk_tag;
 
 /**
  *  Get the first direct child node of this node that has a certain tag
@@ -32,7 +32,7 @@
  *
  *  @return The node that was found, or nil if no node was found
  */
-- (SKNode *)ssk_childNodeWithTag:(NSUInteger)tag;
+- (SKNode *)ssk_childNodeWithTag:(NSInteger)tag;
 
 /**
  *  Get the first child node of this node that has a certain tag, optionally
@@ -47,14 +47,14 @@
  *  disabling recursive searching if only the direct children of this node
  *  should be searched.
  */
-- (SKNode *)ssk_childNodeWithTag:(NSUInteger)tag recursive:(BOOL)recursive;
+- (SKNode *)ssk_childNodeWithTag:(NSInteger)tag recursive:(BOOL)recursive;
 
 /**
  *  Get all direct child nodes of this node that has a certain tag
  *
  *  @param tag The tag to look for
  */
-- (NSArray *)ssk_childNodesWithTag:(NSUInteger)tag;
+- (NSArray *)ssk_childNodesWithTag:(NSInteger)tag;
 
 /**
  *  Get all child nodes of this node that has a certain tag, optionally
@@ -70,7 +70,7 @@
  *  should be searched, or use the -ssk_childNodeWithTag:recursive: API, to
  *  return the first found child who has the tag that is being searched for.
  */
-- (NSArray *)ssk_childNodesWithTag:(NSUInteger)tag recursive:(BOOL)recursive;
+- (NSArray *)ssk_childNodesWithTag:(NSInteger)tag recursive:(BOOL)recursive;
 
 /**
  *  Get all child nodes at a point that has a certain tag
@@ -80,6 +80,6 @@
  *  @discussion This method will find nodes in the node's full tree hierarchy,
  *  using SpriteKit's built-in -nodesAtPoint:.
  */
-- (NSArray *)ssk_nodesAtPoint:(CGPoint)point withTag:(NSUInteger)tag;
+- (NSArray *)ssk_nodesAtPoint:(CGPoint)point withTag:(NSInteger)tag;
 
 @end

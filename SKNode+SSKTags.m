@@ -6,12 +6,12 @@ static NSString * const SSKTagStorageKey = @"SuperSpriteKit_Tag";
 
 #pragma mark - Public
 
-- (NSUInteger)ssk_tag
+- (NSInteger)ssk_tag
 {
     return [[self.userData objectForKey:SSKTagStorageKey] unsignedIntegerValue];
 }
 
-- (void)ssk_setTag:(NSUInteger)tag
+- (void)ssk_setTag:(NSInteger)tag
 {
     if (!self.userData) {
         self.userData = [NSMutableDictionary new];
@@ -20,12 +20,12 @@ static NSString * const SSKTagStorageKey = @"SuperSpriteKit_Tag";
     [self.userData setObject:@(tag) forKey:SSKTagStorageKey];
 }
 
-- (SKNode *)ssk_childNodeWithTag:(NSUInteger)tag
+- (SKNode *)ssk_childNodeWithTag:(NSInteger)tag
 {
     return [self ssk_childNodeWithTag:tag recursive:NO];
 }
 
-- (SKNode *)ssk_childNodeWithTag:(NSUInteger)tag recursive:(BOOL)recursive
+- (SKNode *)ssk_childNodeWithTag:(NSInteger)tag recursive:(BOOL)recursive
 {
     NSArray *matches = [self ssk_childNodesWithTag:tag
                                          recursive:recursive
@@ -34,31 +34,31 @@ static NSString * const SSKTagStorageKey = @"SuperSpriteKit_Tag";
     return [matches firstObject];
 }
 
-- (NSArray *)ssk_childNodesWithTag:(NSUInteger)tag
+- (NSArray *)ssk_childNodesWithTag:(NSInteger)tag
 {
     return [self ssk_childNodesWithTag:tag recursive:NO];
 }
 
-- (NSArray *)ssk_childNodesWithTag:(NSUInteger)tag recursive:(BOOL)recursive
+- (NSArray *)ssk_childNodesWithTag:(NSInteger)tag recursive:(BOOL)recursive
 {
     return [self ssk_childNodesWithTag:tag
                              recursive:recursive
                     returnOnFirstMatch:NO];
 }
 
-- (NSArray *)ssk_nodesAtPoint:(CGPoint)point withTag:(NSUInteger)tag
+- (NSArray *)ssk_nodesAtPoint:(CGPoint)point withTag:(NSInteger)tag
 {
     NSArray *nodesAtPoint = [self nodesAtPoint:point];
-    NSPredicate *tagPredicate = [NSPredicate predicateWithFormat:@"ssk_tag == %u", (unsigned long)tag];
+    NSPredicate *tagPredicate = [NSPredicate predicateWithFormat:@"ssk_tag == %d", (long)tag];
     
     return [nodesAtPoint filteredArrayUsingPredicate:tagPredicate];
 }
 
 #pragma mark - Private
 
-- (NSArray *)ssk_childNodesWithTag:(NSUInteger)tag recursive:(BOOL)recursive returnOnFirstMatch:(BOOL)returnOnFirstMatch
+- (NSArray *)ssk_childNodesWithTag:(NSInteger)tag recursive:(BOOL)recursive returnOnFirstMatch:(BOOL)returnOnFirstMatch
 {
-    NSPredicate *tagPredicate = [NSPredicate predicateWithFormat:@"ssk_tag == %u", (unsigned long)tag];
+    NSPredicate *tagPredicate = [NSPredicate predicateWithFormat:@"ssk_tag == %d", (long)tag];
     NSArray *directChildMatches = [self.children filteredArrayUsingPredicate:tagPredicate];
     
     if (!recursive) {
