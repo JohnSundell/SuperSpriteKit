@@ -19,16 +19,11 @@
 @interface SKNode (SSKTags)
 
 /**
- *  Get the tag of this node
- */
-- (NSUInteger)ssk_tag;
-
-/**
- *  Set the tag of this node
+ *  The node's tag
  *
- *  @param tag The tag that the node should get
+ *  @discussion Defaults to 0
  */
-- (void)ssk_setTag:(NSUInteger)tag;
+@property (nonatomic, setter = ssk_setTag:) NSUInteger ssk_tag;
 
 /**
  *  Get the first direct child node of this node that has a certain tag
