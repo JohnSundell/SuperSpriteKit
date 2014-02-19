@@ -55,6 +55,7 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
 @property (nonatomic, strong, readonly) SKView *view;
 @property (nonatomic, strong) SSKInteractionView *interactionView;
 @property (nonatomic, strong) NSHashTable *currentInteractionNodes;
+@property (nonatomic) CGPoint lastDragInteractionPoint;
 
 @end
 
@@ -96,6 +97,14 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
 {
     switch (event) {
         case SSKInteractionHandlerEventStarted: {
+            self.lastDragInteractionPoint = point;
+            
+            if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
+                if ([self.view.scene respondsToSelector:@selector(pointInteractionWithType:startedAtPoint:)]) {
+                    [(SKScene<SSKInteractiveNode> *)self.view.scene pointInteractionWithType:type startedAtPoint:point];
+                }
+            }
+            
             [self forEachInteractiveNodeAtPoint:point
                          thatRespondsToSelector:@selector(pointInteractionWithType:startedAtPoint:)
                                        runBlock:^(SKNode<SSKInteractiveNode> *node) {
@@ -104,25 +113,24 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
                                            CGPoint nodePoint = [node convertPoint:point fromNode:self.view.scene];
                                            [node pointInteractionWithType:type startedAtPoint:nodePoint];
                                        }];
-            
-            if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
-                if ([self.view.scene respondsToSelector:@selector(pointInteractionWithType:startedAtPoint:)]) {
-                    [(SKScene<SSKInteractiveNode> *)self.view.scene pointInteractionWithType:type startedAtPoint:point];
-                }
-            }
         }
             break;
         case SSKInteractionHandlerEventCancelled:
-            [self pointInteractionCancelledOrEnded];
-            
             if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
                 if ([self.view.scene respondsToSelector:@selector(pointInteractionCancelled)]) {
                     [(SKScene<SSKInteractiveNode> *)self.view.scene pointInteractionCancelled];
                 }
             }
             
+            [self pointInteractionCancelledOrEnded];
             break;
         case SSKInteractionHandlerEventEnded: {
+            if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
+                if ([self.view.scene respondsToSelector:@selector(pointInteractionWithType:endedAtPoint:)]) {
+                    [(SKScene<SSKInteractiveNode> *)self.view.scene pointInteractionWithType:type endedAtPoint:point];
+                }
+            }
+            
             [self forEachInteractiveNodeAtPoint:point
                          thatRespondsToSelector:@selector(pointInteractionWithType:endedAtPoint:)
                                        runBlock:^(SKNode<SSKInteractiveNode> *node) {
@@ -133,12 +141,6 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
                                        }];
             
             [self pointInteractionCancelledOrEnded];
-            
-            if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
-                if ([self.view.scene respondsToSelector:@selector(pointInteractionWithType:endedAtPoint:)]) {
-                    [(SKScene<SSKInteractiveNode> *)self.view.scene pointInteractionWithType:type endedAtPoint:point];
-                }
-            }
         }
             break;
     }
@@ -157,18 +159,42 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
 
 - (void)handlePointerMovedEventAtPoint:(CGPoint)point
 {
+    if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
+        if ([self.view.scene respondsToSelector:@selector(pointerMovedInteractionAtPoint:)]) {
+            [(SKScene<SSKInteractiveNode> *)self.view.scene pointerMovedInteractionAtPoint:point];
+        }
+    }
+    
     [self forEachInteractiveNodeAtPoint:point
                  thatRespondsToSelector:@selector(pointerMovedInteractionAtPoint:)
                                runBlock:^(SKNode<SSKInteractiveNode> *node) {
                                    CGPoint nodePoint = [node convertPoint:point fromNode:self.view.scene];
                                    [node pointerMovedInteractionAtPoint:nodePoint];
                                }];
+}
+
+- (void)handleDragInteractionWithType:(SSKInteractionType)type point:(CGPoint)point previousPoint:(CGPoint)previousPoint
+{
+    CGVector velocity;
+    velocity.dx = point.x - previousPoint.x;
+    velocity.dy = point.y - previousPoint.y;
     
     if ([self.view.scene conformsToProtocol:@protocol(SSKInteractiveNode)]) {
-        if ([self.view.scene respondsToSelector:@selector(pointerMovedInteractionAtPoint:)]) {
-            [(SKScene<SSKInteractiveNode> *)self.view.scene pointerMovedInteractionAtPoint:point];
+        if ([self.view.scene respondsToSelector:@selector(dragInteractionWithType:atPoint:velocity:)]) {
+            [(SKScene<SSKInteractiveNode> *)self.view.scene dragInteractionWithType:type
+                                                                            atPoint:point
+                                                                           velocity:velocity];
         }
     }
+    
+    [self forEachInteractiveNodeAtPoint:point
+                 thatRespondsToSelector:@selector(dragInteractionWithType:atPoint:velocity:)
+                               runBlock:^(SKNode<SSKInteractiveNode> *node) {
+                                   CGPoint nodePoint = [node convertPoint:point fromNode:self.view.scene];
+                                   [node dragInteractionWithType:type atPoint:nodePoint velocity:velocity];
+                               }];
+    
+    self.lastDragInteractionPoint = point;
 }
 
 - (void)forEachInteractiveNodeAtPoint:(CGPoint)point thatRespondsToSelector:(SEL)selector runBlock:(void(^)(SKNode<SSKInteractiveNode> *node))block
@@ -275,6 +301,15 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
     }
 }
 
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    for (UITouch *touch in touches) {
+        [self.interactionHandler handleDragInteractionWithType:SSKInteractionTypePrimary
+                                                         point:[touch locationInNode:self.scene]
+                                                 previousPoint:[touch previousLocationInNode:self.scene]];
+    }
+}
+
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     for (UITouch *touch in touches) {
@@ -313,6 +348,20 @@ static BOOL SSKEventModifierFlagsContainNewKeyUp(NSUInteger newFlags, NSUInteger
     [self.interactionHandler handlePointInteractionEvent:SSKInteractionHandlerEventStarted
                                                     type:SSKInteractionTypeSecondary
                                                    point:[event locationInNode:self.scene]];
+}
+
+- (void)mouseDragged:(NSEvent *)event
+{
+    [self.interactionHandler handleDragInteractionWithType:SSKInteractionTypePrimary
+                                                     point:[event locationInNode:self.scene]
+                                             previousPoint:self.interactionHandler.lastDragInteractionPoint];
+}
+
+- (void)rightMouseDragged:(NSEvent *)event
+{
+    [self.interactionHandler handleDragInteractionWithType:SSKInteractionTypeSecondary
+                                                     point:[event locationInNode:self.scene]
+                                             previousPoint:self.interactionHandler.lastDragInteractionPoint];
 }
 
 - (void)mouseUp:(NSEvent *)event

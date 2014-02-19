@@ -84,6 +84,19 @@ typedef enum : NSUInteger {
  */
 - (void)pointerMovedInteractionAtPoint:(CGPoint)point;
 
+/**
+ *  Sent to an interactive node when a drag interaction occured on it
+ *
+ *  @param type The type of the interaction.
+ *  @param point The point (in the node's coordinate space) where the
+ *  interaction took place.
+ *  @param velocity The velocity of the drag (the delta between the current
+ *  point and the previously registered point - in the node's coordinate space).
+ */
+- (void)dragInteractionWithType:(SSKInteractionType)type
+                        atPoint:(CGPoint)point
+                       velocity:(CGVector)velocity;
+
 @end
 
 #pragma mark - SSKInteractiveScene
