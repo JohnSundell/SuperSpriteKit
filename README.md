@@ -32,6 +32,10 @@ A class dedicated to input in a platform-agnostic manner. By using this interact
 
 A category on SKSpriteNode that enables easy animation without having to create new actions. It also provides a utility function for generating an array of SKTexture instances from a texture atlas.
 
+##### SKNode+SSKTags
+
+A category on SKNode that adds support for tags to SKNode instances. These tags works similarly to how UIView and NSView's tag API works, but also provides some additional methods for getting all nodes at a point that has a certain tag, or performing a recursive search for all nodes that has a certain tag.
+
 #### Hope that you'll enjoy using SuperSpriteKit
 
 This is just the beginning! I would love to get pull requests if you have created a generic SpriteKit-extension that you would like to be included!
