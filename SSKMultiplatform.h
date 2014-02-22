@@ -15,6 +15,14 @@
 #define SSKEdgeInsetsType NSEdgeInsets
 #endif
 
+/**
+ *  Create an edge insets struct specific to the current platform
+ *
+ *  @param top The top value of the edge insets
+ *  @param left The left value of the edge insets
+ *  @param bottom The bottom value of the edge insets
+ *  @param right The right value of the edge insets
+ */
 static inline SSKEdgeInsetsType SSKEdgeInsetsMake(CGFloat top, CGFloat left, CGFloat bottom, CGFloat right)
 {
     SSKEdgeInsetsType edgeInsets;
