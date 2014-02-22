@@ -15,6 +15,18 @@
 #define SSKEdgeInsetsType NSEdgeInsets
 #endif
 
+static inline SSKEdgeInsetsType SSKEdgeInsetsMake(CGFloat top, CGFloat left, CGFloat bottom, CGFloat right)
+{
+    SSKEdgeInsetsType edgeInsets;
+    
+    edgeInsets.top = top;
+    edgeInsets.left = left;
+    edgeInsets.bottom = bottom;
+    edgeInsets.right = right;
+    
+    return edgeInsets;
+}
+
 #pragma mark - Platform information
 
 /**
