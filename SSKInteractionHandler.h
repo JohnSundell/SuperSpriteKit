@@ -179,6 +179,9 @@ typedef enum : NSUInteger {
  *  @discussion The interaction handler will add a transparent view to the view
  *  that it is added to. The interaction handler uses this view to observe user
  *  interactions.
+ *
+ *  @note This will not retain the interaction handler. You must retain the
+ *  interaction handler yourself.
  */
 - (void)ssk_addInteractionHandler:(SSKInteractionHandler *)interactionHandler;
 
