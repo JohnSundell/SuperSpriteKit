@@ -51,8 +51,7 @@
  *
  *  @param size The size the node should have.
  *  @param imageName The name of an image that will be used for the
- *  node's texture. If this parameter is nil, this method will return
- *  nil, and no node will be created.
+ *  node's texture.
  *  @param capInsets Edge insets defining the cap insets to use when
  *  streching the node's texture.
  */
@@ -64,8 +63,7 @@
  *  Allocate and initialize a new instance of JSStretchableNode
  *
  *  @param size The size the node should have.
- *  @param texture The texture to use for the node. If this parameter
- *  is nil, this method will return nil, and no node will be created.
+ *  @param texture The texture to use for the node.
  *  @param capInsets Edge insets defining the cap insets to use when
  *  streching the node's texture.
  */

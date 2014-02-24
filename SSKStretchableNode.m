@@ -114,10 +114,6 @@ static CGRect JSStretchableNodeTextureRectFromPartRect(SKTexture *texture, CGRec
 
 + (instancetype)stretchableNodeWithSize:(CGSize)size texture:(SKTexture *)texture capInsets:(SSKEdgeInsetsType)capInsets
 {
-    if (!texture) {
-        return nil;
-    }
-    
     SSKStretchableNode *node = [self node];
     [node setSize:size drawPartNodes:NO];
     [node setTexture:texture capInsets:capInsets];
@@ -132,6 +128,10 @@ static CGRect JSStretchableNodeTextureRectFromPartRect(SKTexture *texture, CGRec
     if (self.size.width == 0 || self.size.height == 0) {
         self.partNodes = nil;
         
+        return;
+    }
+    
+    if (!self.texture) {
         return;
     }
     
