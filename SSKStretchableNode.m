@@ -132,6 +132,15 @@ static CGRect JSStretchableNodeTextureRectFromPartRect(SKTexture *texture, CGRec
     }
     
     if (!self.texture) {
+        if (self.color) {
+            SKSpriteNode *colorNode = [SKSpriteNode spriteNodeWithColor:self.color size:self.size];
+            colorNode.anchorPoint = CGPointZero;
+            colorNode.colorBlendFactor = self.colorBlendFactor;
+            [self addChild:colorNode];
+            
+            self.partNodes = @[colorNode];
+        }
+        
         return;
     }
     
@@ -230,6 +239,12 @@ static CGRect JSStretchableNodeTextureRectFromPartRect(SKTexture *texture, CGRec
     
     _color = color;
     
+    if ([self.partNodes count] == 0) {
+        [self drawPartNodes];
+        
+        return;
+    }
+    
     for (SSKTileableNode *partNode in self.partNodes) {
         partNode.color = color;
     }
@@ -242,6 +257,12 @@ static CGRect JSStretchableNodeTextureRectFromPartRect(SKTexture *texture, CGRec
     }
     
     _colorBlendFactor = colorBlendFactor;
+    
+    if ([self.partNodes count] == 0) {
+        [self drawPartNodes];
+        
+        return;
+    }
     
     for (SSKTileableNode *partNode in self.partNodes) {
         partNode.colorBlendFactor = colorBlendFactor;
