@@ -156,6 +156,8 @@ static CGRect JSStretchableNodeTextureRectFromPartRect(SKTexture *texture, CGRec
         SKTexture *partTexture = [SKTexture textureWithRect:partTextureRect inTexture:self.texture];
         SSKTileableNode *partNode = [SSKTileableNode tileableNodeWithSize:partNodeRect.size texture:partTexture];
         partNode.position = partNodeRect.origin;
+        partNode.color = self.color;
+        partNode.colorBlendFactor = self.colorBlendFactor;
         
         [self addChild:partNode];
         [partNodes addObject:partNode];
