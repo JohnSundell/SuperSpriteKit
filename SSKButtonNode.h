@@ -67,6 +67,11 @@ typedef enum : NSUInteger {
  *  in-game user interfaces
  *
  *  @discussion It's API is heavily inspired by UI/NSButton.
+ *
+ *  @note To be able to respond to user interactions, SSKButtonNode
+ *  requires the SKView it's being displayed in to have an SSKInteractionHandler
+ *  attached to it. For more information about interaction handling in
+ *  SuperSpriteKit, see SSKInteractionHandler.
  */
 @interface SSKButtonNode : SKNode <SSKInteractiveNode>
 
