@@ -9,3 +9,4 @@
 #import "SSKMultiLineLabelNode.h"
 #import "SSKTileableNode.h"
 #import "SSKStretchableNode.h"
+#import "SSKButtonNode.h"
