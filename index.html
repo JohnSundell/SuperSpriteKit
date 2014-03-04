@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>SuperSpriteKit by JohnSundell</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/JohnSundell/SuperSpriteKit">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/JohnSundell/SuperSpriteKit/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/JohnSundell/SuperSpriteKit/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>SuperSpriteKit</h1>
+          <p>Extensions to Apple&#39;s SpriteKit game engine</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/JohnSundell">JohnSundell</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
+<a name="superspritekit" class="anchor" href="#superspritekit"><span class="octicon octicon-link"></span></a>SuperSpriteKit</h1>
+
+<h4>
+<a name="extensions-to-apples-spritekit-game-engine" class="anchor" href="#extensions-to-apples-spritekit-game-engine"><span class="octicon octicon-link"></span></a>Extensions to Apple's SpriteKit game engine</h4>
+
+<p>(The name is more of a homage to retro games than a claim that this is better than the original spritekit ^_^)</p>
+
+<p>While SpriteKit is incredibly awesome, it doesn't contain all the classes or functionality that many games will need (nor should it).
+This collection of categories &amp; classes attempts to fill some of those needs.
+Most of SuperSpriteKit's components can be used as-is, but some have dependencies on some of its siblings.
+All dependencies are clearly listed in the documentation and always #imported in the header files, for clearity.</p>
+
+<h4>
+<a name="meet-the-family" class="anchor" href="#meet-the-family"><span class="octicon octicon-link"></span></a>Meet the family</h4>
+
+<h5>
+<a name="ssktileablenode" class="anchor" href="#ssktileablenode"><span class="octicon octicon-link"></span></a>SSKTileableNode</h5>
+
+<p>A node that allows you to tile a texture across a size. The default SKSpriteNode only allows for stretching of a texture, but in some cases (backgrounds, etc.) tiling is very useful.</p>
+
+<h5>
+<a name="sskstretchablenode" class="anchor" href="#sskstretchablenode"><span class="octicon octicon-link"></span></a>SSKStretchableNode</h5>
+
+<p>A node that allows you to gracefully stretch a texture across a size, using edge insets. This node works pretty much like UIImage's -resizableImageWithCapInsets:, and is very useful for dynamically sized UI components and allows you to use a smaller texture asset for game objects that have textures with large parts that should just be repeated.</p>
+
+<h5>
+<a name="sskmultilinelabelnode" class="anchor" href="#sskmultilinelabelnode"><span class="octicon octicon-link"></span></a>SSKMultiLineLabelNode</h5>
+
+<p>A label node that can render multiple lines of text. It provides a simple API for creating instances using a max-width and a set number of lines (if desired). It also supports setting styles like font, font size and text color.</p>
+
+<h5>
+<a name="sskbuttonnode" class="anchor" href="#sskbuttonnode"><span class="octicon octicon-link"></span></a>SSKButtonNode</h5>
+
+<p>A button node that makes it really easy to create in-game button-type controls. Its API mimics parts of NS/UIButton's API, with support for background textures, background colors, titles, icons, etc. for various states. It also supports a set of different selection styles to enable creation of different type of controls.</p>
+
+<h5>
+<a name="sskinteractionhandler" class="anchor" href="#sskinteractionhandler"><span class="octicon octicon-link"></span></a>SSKInteractionHandler</h5>
+
+<p>A class dedicated to input in a platform-agnostic manner. By using this interaction handler a lot of platform-specific and/or boilerplate input code can be removed from scenes and nodes throught the game. At the moment, the supported interactions are: touch &amp; mouse click events &amp; mouse move events &amp; keyboard events, but more is coming soon!</p>
+
+<h5>
+<a name="skspritenodesskanimation" class="anchor" href="#skspritenodesskanimation"><span class="octicon octicon-link"></span></a>SKSpriteNode+SSKAnimation</h5>
+
+<p>A category on SKSpriteNode that enables easy animation without having to create new actions. It also provides a utility function for generating an array of SKTexture instances from a texture atlas.</p>
+
+<h5>
+<a name="sknodessktags" class="anchor" href="#sknodessktags"><span class="octicon octicon-link"></span></a>SKNode+SSKTags</h5>
+
+<p>A category on SKNode that adds support for tags to SKNode instances. These tags works similarly to how UIView and NSView's tag API works, but also provides some additional methods for getting all nodes at a point that has a certain tag, or performing a recursive search for all nodes that has a certain tag.</p>
+
+<h4>
+<a name="hope-that-youll-enjoy-using-superspritekit" class="anchor" href="#hope-that-youll-enjoy-using-superspritekit"><span class="octicon octicon-link"></span></a>Hope that you'll enjoy using SuperSpriteKit</h4>
+
+<p>This is just the beginning! I would love to get pull requests if you have created a generic SpriteKit-extension that you would like to be included!</p>
+
+<p>Why not give me a shout on Twitter: <a href="https://twitter.com/johnsundell">@johnsundell</a></p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
