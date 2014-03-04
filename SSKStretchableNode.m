@@ -219,7 +219,7 @@ static CGRect JSStretchableNodeTextureRectFromPartRect(SKTexture *texture, CGRec
         return;
     }
     
-    if (!self.partNodes) {
+    if ([self.partNodes count] < 2) {
         [self drawPartNodes];
         return;
     }
