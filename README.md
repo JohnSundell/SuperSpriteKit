@@ -24,6 +24,10 @@ A node that allows you to gracefully stretch a texture across a size, using edge
 
 A label node that can render multiple lines of text. It provides a simple API for creating instances using a max-width and a set number of lines (if desired). It also supports setting styles like font, font size and text color.
 
+##### SSKButtonNode
+
+A button node that makes it really easy to create in-game button-type controls. Its API mimics parts of NS/UIButton's API, with support for background textures, background colors, titles, icons, etc. for various states. It also supports a set of different selection styles to enable creation of different type of controls.
+
 ##### SSKInteractionHandler
 
 A class dedicated to input in a platform-agnostic manner. By using this interaction handler a lot of platform-specific and/or boilerplate input code can be removed from scenes and nodes throught the game. At the moment, the supported interactions are: touch & mouse click events & mouse move events & keyboard events, but more is coming soon!
