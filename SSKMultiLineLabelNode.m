@@ -1,6 +1,6 @@
 #import "SSKMultiLineLabelNode.h"
 
-static CGFloat JSMultilineLabelNodeGetFontLineHeight(SSKFontType *font)
+static CGFloat SSKMultiLineLabelNodeGetFontLineHeight(SSKFontType *font)
 {
 #if TARGET_OS_IPHONE
     return font.lineHeight;
@@ -9,7 +9,7 @@ static CGFloat JSMultilineLabelNodeGetFontLineHeight(SSKFontType *font)
 #endif
 }
 
-static NSString *JSMultilineLabelNodeGetStringForWord(NSString *word)
+static NSString *SSKMultiLineLabelNodeGetStringForWord(NSString *word)
 {
     return [word stringByAppendingString:@" "];
 }
@@ -103,7 +103,7 @@ static NSString *JSMultilineLabelNodeGetStringForWord(NSString *word)
     NSUInteger numberOfParsedWords = 0;
     
     SSKFontType *font = [SSKFontType fontWithName:self.fontName size:self.fontSize];
-    CGFloat fontLineHeight = JSMultilineLabelNodeGetFontLineHeight(font);
+    CGFloat fontLineHeight = SSKMultiLineLabelNodeGetFontLineHeight(font);
     NSDictionary *textAttributes = @{NSFontAttributeName: font};
     NSCharacterSet *newLineCharacterSet = [NSCharacterSet newlineCharacterSet];
     
@@ -123,7 +123,7 @@ static NSString *JSMultilineLabelNodeGetStringForWord(NSString *word)
                 word = [word stringByReplacingCharactersInRange:newLineCharacterRange withString:@""];
             }
             
-            [lineText appendString:JSMultilineLabelNodeGetStringForWord(word)];
+            [lineText appendString:SSKMultiLineLabelNodeGetStringForWord(word)];
             numberOfParsedWords++;
             
             if ([wordLines count] > 1) {
@@ -136,7 +136,7 @@ static NSString *JSMultilineLabelNodeGetStringForWord(NSString *word)
                 [lineText deleteCharactersInRange:(NSRange){[lineText length] - 1, 1}];
                 [lineText replaceCharactersInRange:(NSRange) {[lineText length] - 3, 3} withString:@"..."];
             } else {
-                NSString *lastWord = JSMultilineLabelNodeGetStringForWord([wordsInText objectAtIndex:numberOfParsedWords - 1]);
+                NSString *lastWord = SSKMultiLineLabelNodeGetStringForWord([wordsInText objectAtIndex:numberOfParsedWords - 1]);
                 NSRange deleteRange = NSMakeRange([lineText length] - [lastWord length], [lastWord length]);
                 [lineText deleteCharactersInRange:deleteRange];
                 numberOfParsedWords--;
