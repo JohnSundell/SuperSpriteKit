@@ -133,8 +133,10 @@ static NSString *SSKMultiLineLabelNodeGetStringForWord(NSString *word)
         
         while ([lineText sizeWithAttributes:textAttributes].width > self.maximumWidth) {
             if (numberOfParsedWords == 1) {
-                [lineText deleteCharactersInRange:(NSRange){[lineText length] - 1, 1}];
-                [lineText replaceCharactersInRange:(NSRange) {[lineText length] - 3, 3} withString:@"..."];
+                [lineText deleteCharactersInRange:NSMakeRange([lineText length] - 1, 1)];
+                
+                NSString *suffix = @"...";
+                [lineText replaceCharactersInRange:NSMakeRange([lineText length] - [suffix length], [suffix length]) withString:suffix];
             } else {
                 NSString *lastWord = SSKMultiLineLabelNodeGetStringForWord([wordsInText objectAtIndex:numberOfParsedWords - 1]);
                 NSRange deleteRange = NSMakeRange([lineText length] - [lastWord length], [lastWord length]);
