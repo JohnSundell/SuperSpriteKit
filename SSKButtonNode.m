@@ -68,7 +68,7 @@ static SSKEdgeInsetsType SSKButtonNodeGetEdgeInsetsForArray(NSArray *edgeInsetsA
 @property (nonatomic, strong) NSMutableDictionary *stretchableBackgroundTextureCapInsets;
 @property (nonatomic, strong) NSMutableDictionary *iconTextures;
 @property (nonatomic, strong) NSMutableDictionary *titles;
-@property (nonatomic, strong) NSMutableDictionary *titleEdgeInsets;
+@property (nonatomic, strong) NSMutableDictionary *titleOffsets;
 
 @property (nonatomic, strong, readwrite) SKLabelNode *titleLabelNode;
 @property (nonatomic, strong) SSKStretchableNode *backgroundNode;
@@ -99,7 +99,7 @@ static SSKEdgeInsetsType SSKButtonNodeGetEdgeInsetsForArray(NSArray *edgeInsetsA
     buttonNode.stretchableBackgroundTextureCapInsets = [NSMutableDictionary new];
     buttonNode.iconTextures = [NSMutableDictionary new];
     buttonNode.titles = [NSMutableDictionary new];
-    buttonNode.titleEdgeInsets = [NSMutableDictionary new];
+    buttonNode.titleOffsets = [NSMutableDictionary new];
     
     CGFloat systemFontSize = [SSKFontType systemFontSize];
     SSKFontType *systemFont = [SSKFontType systemFontOfSize:systemFontSize];
@@ -257,19 +257,19 @@ static SSKEdgeInsetsType SSKButtonNodeGetEdgeInsetsForArray(NSArray *edgeInsetsA
     }
 }
 
-- (SSKEdgeInsetsType)titleEdgeInsetsForState:(SSKButtonState)state
+- (SSKEdgeInsetsType)titleOffsetForState:(SSKButtonState)state
 {
-    NSArray *edgeInsetsArray = [self.titleEdgeInsets objectForKey:@(state)];
+    NSArray *edgeInsetsArray = [self.titleOffsets objectForKey:@(state)];
     
     return SSKButtonNodeGetEdgeInsetsForArray(edgeInsetsArray);
 }
 
-- (void)setTitleEdgeInsets:(NSEdgeInsets)edgeInsets forState:(SSKButtonState)state
+- (void)setTitleOffset:(SSKEdgeInsetsType)offset forState:(SSKButtonState)state
 {
-    NSArray *edgeInsetsArray = SSKButtonNodeGetArrayForEdgeInsets(edgeInsets);
+    NSArray *edgeInsetsArray = SSKButtonNodeGetArrayForEdgeInsets(offset);
     
-    [self.titleEdgeInsets setObject:edgeInsetsArray
-                             forKey:@(state)];
+    [self.titleOffsets setObject:edgeInsetsArray
+                          forKey:@(state)];
     
     if (self.state == state) {
         [self updateLayout];
@@ -422,18 +422,18 @@ static SSKEdgeInsetsType SSKButtonNodeGetEdgeInsetsForArray(NSArray *edgeInsetsA
     
     titleNodePosition.y = floorf(self.size.height / 2);
     
-    SSKEdgeInsetsType titleEdgeInsets;
+    SSKEdgeInsetsType titleOffset;
 
-    if ([self.titleEdgeInsets objectForKey:@(self.state)]) {
-        titleEdgeInsets = [self titleEdgeInsetsForState:self.state];
+    if ([self.titleOffsets objectForKey:@(self.state)]) {
+        titleOffset = [self titleOffsetForState:self.state];
     } else {
-        titleEdgeInsets = [self titleEdgeInsetsForState:SSKButtonStateNormal];
+        titleOffset = [self titleOffsetForState:SSKButtonStateNormal];
     }
     
-    titleNodePosition.y -= titleEdgeInsets.top;
-    titleNodePosition.x += titleEdgeInsets.left;
-    titleNodePosition.y += titleEdgeInsets.bottom;
-    titleNodePosition.x -= titleEdgeInsets.right;
+    titleNodePosition.y -= titleOffset.top;
+    titleNodePosition.x += titleOffset.left;
+    titleNodePosition.y += titleOffset.bottom;
+    titleNodePosition.x -= titleOffset.right;
     
     self.titleLabelNode.position = titleNodePosition;
     
