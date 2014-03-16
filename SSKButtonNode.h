@@ -322,6 +322,30 @@ typedef enum : NSUInteger {
 - (void)setTitle:(NSString *)title
         forState:(SSKButtonState)state;
 
+/**
+ *  Return the title edge insets for a state
+ *
+ *  @param state The state to get the title edge insets for
+ *
+ *  @discussion The default value for every state is an edge insets struct
+ *  with all of its members set to zero, meaning that the button's title
+ *  will be displayed in the center (offset by the icon, if any) of the button.
+ */
+- (SSKEdgeInsetsType)titleEdgeInsetsForState:(SSKButtonState)state;
+
+/**
+ *  Set the title edge insets for a state
+ *
+ *  @param edgeInsets The edge insets to set
+ *  @param state The state to set the title edge insets for
+ *
+ *  @discussion Setting any of the edge insets member to non-zero will push the title
+ *  (regardless of if an icon is displayed or not) in that direction. For example,
+ *  setting the top value of the edge insets to 5, will push the title 5 points down.
+ */
+- (void)setTitleEdgeInsets:(SSKEdgeInsetsType)edgeInsets
+                  forState:(SSKButtonState)state;
+
 #pragma mark Layout
 
 /**

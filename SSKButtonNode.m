@@ -1,5 +1,23 @@
 #import "SSKButtonNode.h"
 
+#pragma mark - C Utilities
+
+static NSArray *SSKButtonNodeGetArrayForEdgeInsets(SSKEdgeInsetsType edgeInsets)
+{
+    return @[@(edgeInsets.top), @(edgeInsets.left), @(edgeInsets.bottom), @(edgeInsets.right)];
+}
+
+static SSKEdgeInsetsType SSKButtonNodeGetEdgeInsetsForArray(NSArray *edgeInsetsArray)
+{
+    SSKEdgeInsetsType edgeInsets;
+    edgeInsets.top = [[edgeInsetsArray objectAtIndex:0] doubleValue];
+    edgeInsets.left = [[edgeInsetsArray objectAtIndex:1] doubleValue];
+    edgeInsets.bottom = [[edgeInsetsArray objectAtIndex:2] doubleValue];
+    edgeInsets.right = [[edgeInsetsArray objectAtIndex:3] doubleValue];
+    
+    return edgeInsets;
+}
+
 #pragma mark - SSKButtonTargetActionPair
 
 @interface SSKButtonTargetActionPair : NSObject
@@ -50,6 +68,7 @@
 @property (nonatomic, strong) NSMutableDictionary *stretchableBackgroundTextureCapInsets;
 @property (nonatomic, strong) NSMutableDictionary *iconTextures;
 @property (nonatomic, strong) NSMutableDictionary *titles;
+@property (nonatomic, strong) NSMutableDictionary *titleEdgeInsets;
 
 @property (nonatomic, strong, readwrite) SKLabelNode *titleLabelNode;
 @property (nonatomic, strong) SSKStretchableNode *backgroundNode;
@@ -80,6 +99,7 @@
     buttonNode.stretchableBackgroundTextureCapInsets = [NSMutableDictionary new];
     buttonNode.iconTextures = [NSMutableDictionary new];
     buttonNode.titles = [NSMutableDictionary new];
+    buttonNode.titleEdgeInsets = [NSMutableDictionary new];
     
     CGFloat systemFontSize = [SSKFontType systemFontSize];
     SSKFontType *systemFont = [SSKFontType systemFontOfSize:systemFontSize];
@@ -182,18 +202,12 @@
 {
     NSArray *capInsetsArray = [self.stretchableBackgroundTextureCapInsets objectForKey:@(state)];
     
-    SSKEdgeInsetsType capInsets;
-    capInsets.top = [[capInsetsArray objectAtIndex:0] doubleValue];
-    capInsets.left = [[capInsetsArray objectAtIndex:1] doubleValue];
-    capInsets.bottom = [[capInsetsArray objectAtIndex:2] doubleValue];
-    capInsets.right = [[capInsetsArray objectAtIndex:3] doubleValue];
-    
-    return capInsets;
+    return SSKButtonNodeGetEdgeInsetsForArray(capInsetsArray);
 }
 
 - (void)setStretchableBackgroundCapInsets:(SSKEdgeInsetsType)capInsets forState:(SSKButtonState)state
 {
-    NSArray *capInsetsArray = @[@(capInsets.top), @(capInsets.left), @(capInsets.bottom), @(capInsets.right)];
+    NSArray *capInsetsArray = SSKButtonNodeGetArrayForEdgeInsets(capInsets);
     
     [self.stretchableBackgroundTextureCapInsets setObject:capInsetsArray
                                                    forKey:@(state)];
@@ -237,6 +251,25 @@
     }
     
     [self.titles setObject:objectToInsert forKey:@(state)];
+    
+    if (self.state == state) {
+        [self updateLayout];
+    }
+}
+
+- (SSKEdgeInsetsType)titleEdgeInsetsForState:(SSKButtonState)state
+{
+    NSArray *edgeInsetsArray = [self.titleEdgeInsets objectForKey:@(state)];
+    
+    return SSKButtonNodeGetEdgeInsetsForArray(edgeInsetsArray);
+}
+
+- (void)setTitleEdgeInsets:(NSEdgeInsets)edgeInsets forState:(SSKButtonState)state
+{
+    NSArray *edgeInsetsArray = SSKButtonNodeGetArrayForEdgeInsets(edgeInsets);
+    
+    [self.titleEdgeInsets setObject:edgeInsetsArray
+                             forKey:@(state)];
     
     if (self.state == state) {
         [self updateLayout];
@@ -388,6 +421,20 @@
     }
     
     titleNodePosition.y = floorf(self.size.height / 2);
+    
+    SSKEdgeInsetsType titleEdgeInsets;
+
+    if ([self.titleEdgeInsets objectForKey:@(self.state)]) {
+        titleEdgeInsets = [self titleEdgeInsetsForState:self.state];
+    } else {
+        titleEdgeInsets = [self titleEdgeInsetsForState:SSKButtonStateNormal];
+    }
+    
+    titleNodePosition.y -= titleEdgeInsets.top;
+    titleNodePosition.x += titleEdgeInsets.left;
+    titleNodePosition.y += titleEdgeInsets.bottom;
+    titleNodePosition.x -= titleEdgeInsets.right;
+    
     self.titleLabelNode.position = titleNodePosition;
     
     SKTexture *backgroundTexture = [self backgroundTextureForState:self.state];
