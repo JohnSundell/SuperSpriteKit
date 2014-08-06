@@ -69,4 +69,36 @@
                                    maximumWidth:(CGFloat)maximumWidth
                                            text:(NSString *)text;
 
+/**
+ *  Allocate and initialize a new instance of JSMultiLineLabelNode
+ *
+ *  @param fontName The name of the font to use when rendering the node's text.
+ *  @param fontSize The font size to use when rendering the node's text.
+ *  @param fontColor The font color to use when rednering the node's text.
+ *  @param numberOfLines The maximum number of lines the node should have.
+ *  When the maximum number of lines has been reached, the node will stop
+ *  rendering text.
+ *  @param lineHeightMultiplier Modifies the lineheight by multiplying the current
+ *  font lineheight with this value.
+ *  @param maximumWidth The maximum width the node should have. When a line of
+ *  text has reached the maximum width, the text will be wrapped to a new line.
+ *  @param text The text the node should display.
+ */
+
++ (instancetype)multiLineLabelNodeWithFontNamed:(NSString *)fontName
+                                       fontSize:(CGFloat)fontSize
+                                      fontColor:(SKColor *)fontColor
+                                  numberOfLines:(NSUInteger)numberOfLines
+                           lineHeightMultiplier:(CGFloat)lineHeightMultiplier
+                                   maximumWidth:(CGFloat)maximumWidth
+                                           text:(NSString *)text;
+
 @end
+
+
+
+
+
+
+
+

@@ -18,6 +18,7 @@ static NSString *SSKMultiLineLabelNodeGetStringForWord(NSString *word)
 
 @property (nonatomic, strong) NSArray *lineLabelNodes;
 @property (nonatomic) NSUInteger numberOfLines;
+@property (nonatomic) NSUInteger lineHeightMultiplier;
 @property (nonatomic) CGFloat maximumWidth;
 
 @end
@@ -36,9 +37,21 @@ static NSString *SSKMultiLineLabelNodeGetStringForWord(NSString *word)
 
 + (instancetype)multiLineLabelNodeWithFontNamed:(NSString *)fontName fontSize:(CGFloat)fontSize fontColor:(SKColor *)fontColor numberOfLines:(NSUInteger)numberOfLines maximumWidth:(CGFloat)maximumWidth text:(NSString *)text
 {
+    return [self multiLineLabelNodeWithFontNamed:fontName
+                                        fontSize:fontSize
+                                       fontColor:[SKColor blackColor]
+                                   numberOfLines:0
+                            lineHeightMultiplier:1
+                                    maximumWidth:maximumWidth
+                                            text:text];
+}
+
++ (instancetype)multiLineLabelNodeWithFontNamed:(NSString *)fontName fontSize:(CGFloat)fontSize fontColor:(SKColor *)fontColor numberOfLines:(NSUInteger)numberOfLines lineHeightMultiplier:(CGFloat)lineHeightMultiplier maximumWidth:(CGFloat)maximumWidth text:(NSString *)text
+{
     SSKMultiLineLabelNode *label = [SSKMultiLineLabelNode node];
     
     label.numberOfLines = numberOfLines;
+    label.lineHeightMultiplier = lineHeightMultiplier;
     label.fontName = fontName;
     label.fontSize = fontSize;
     label.fontColor = fontColor;
@@ -104,6 +117,7 @@ static NSString *SSKMultiLineLabelNodeGetStringForWord(NSString *word)
     
     SSKFontType *font = [SSKFontType fontWithName:self.fontName size:self.fontSize];
     CGFloat fontLineHeight = SSKMultiLineLabelNodeGetFontLineHeight(font);
+    fontLineHeight *= self.lineHeightMultiplier;
     NSDictionary *textAttributes = @{NSFontAttributeName: font};
     NSCharacterSet *newLineCharacterSet = [NSCharacterSet newlineCharacterSet];
     
