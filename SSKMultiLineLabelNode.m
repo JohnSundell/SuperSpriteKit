@@ -35,17 +35,6 @@ static NSString *SSKMultiLineLabelNodeGetStringForWord(NSString *word)
                                             text:text];
 }
 
-+ (instancetype)multiLineLabelNodeWithFontNamed:(NSString *)fontName fontSize:(CGFloat)fontSize fontColor:(SKColor *)fontColor numberOfLines:(NSUInteger)numberOfLines maximumWidth:(CGFloat)maximumWidth text:(NSString *)text
-{
-    return [self multiLineLabelNodeWithFontNamed:fontName
-                                        fontSize:fontSize
-                                       fontColor:[SKColor blackColor]
-                                   numberOfLines:0
-                            lineHeightMultiplier:1
-                                    maximumWidth:maximumWidth
-                                            text:text];
-}
-
 + (instancetype)multiLineLabelNodeWithFontNamed:(NSString *)fontName fontSize:(CGFloat)fontSize fontColor:(SKColor *)fontColor numberOfLines:(NSUInteger)numberOfLines lineHeightMultiplier:(CGFloat)lineHeightMultiplier maximumWidth:(CGFloat)maximumWidth text:(NSString *)text
 {
     SSKMultiLineLabelNode *label = [SSKMultiLineLabelNode node];
