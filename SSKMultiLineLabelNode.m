@@ -18,7 +18,7 @@ static NSString *SSKMultiLineLabelNodeGetStringForWord(NSString *word)
 
 @property (nonatomic, strong) NSArray *lineLabelNodes;
 @property (nonatomic) NSUInteger numberOfLines;
-@property (nonatomic) NSUInteger lineHeightMultiplier;
+@property (nonatomic) CGFloat lineHeightMultiplier;
 @property (nonatomic) CGFloat maximumWidth;
 
 @end
